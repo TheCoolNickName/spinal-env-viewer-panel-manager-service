@@ -1,0 +1,16 @@
+{
+  "name": "spinal-env-viewer-panel-manager-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "doc": "jsdoc2md --template templates/README.md --files SpinalPanelManagerService.js SpinalPanelApp.js SpinalForgeExtention.js > README.md",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Spinalcom",
+  "devDependencies": {
+    "jsdoc-to-markdown": "^4.0.1"
+  }
+}
