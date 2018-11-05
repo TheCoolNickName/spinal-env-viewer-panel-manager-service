@@ -46,6 +46,8 @@ function configInit(option) {
   }
   cfg.name = option.name || "spinalExtention";
   cfg.vueMountComponent = option.vueMountComponent;
+  cfg.onLoad = option.onLoad;
+  cfg.onUnLoad = option.onUnLoad;
   return cfg;
 }
 
@@ -63,7 +65,7 @@ function createToolbar() {
     this.cfg.toolbar.label
   );
   this.toolbarButton.onClick = () => {
-    this.tooglePanel();
+    this.tooglePanel(this.cfg);
   };
   var icon = this.toolbarButton.container.firstChild;
   icon.className = "adsk-button-icon md-icon md-icon-font md-theme-default";
@@ -111,6 +113,8 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
 {
   name: "extention_name",
   vueMountComponent: Vue.extend(aVueCompoment),
+  onLoad: () => {console.log("onLoad");},
+  onUnLoad: () => {console.log("onUnLoad");},
   toolbar: {
     icon: "done",
     label: "testLabel",
@@ -126,7 +130,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
     overflowY: "auto"
   }
 }
-     * ```
+```
      * @param {object} option see description
      * @returns SpinalForgeExtention
      */
@@ -163,6 +167,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
               );
             }
           }
+          if (typeof cfg.onLoad !== "undefined") cfg.onLoad();
         }
         /**
          * method called when the viewer unload of the extention
@@ -172,6 +177,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
           if (typeof cfg.toolbar !== "undefined") {
             this.viewer.subToolbar.removeControl(this.toolbarButton);
           }
+          if (typeof cfg.onUnLoad !== "undefined") cfg.onUnLoad();
         }
 
         /**
