@@ -25,14 +25,14 @@
 const G_root = typeof window == "undefined" ? global : window;
 const SpinalPanelManagerService = require("./SpinalPanelManagerService");
 const SpinalPanelApp = require("./SpinalPanelApp");
-const SpinalForgeExtention = require("./SpinalForgeExtention.js")(
-  SpinalPanelManagerService,
-  SpinalPanelApp
-);
 
 if (typeof G_root.spinal === "undefined") G_root.spinal = {};
 if (typeof G_root.spinal.spinalPanelManagerService === "undefined")
   G_root.spinal.spinalPanelManagerService = new SpinalPanelManagerService();
+const SpinalForgeExtention = require("./SpinalForgeExtention.js")(
+  G_root.spinal.spinalPanelManagerService,
+  SpinalPanelApp
+);
 
 module.exports = {
   spinalPanelManagerService: G_root.spinal.spinalPanelManagerService,
