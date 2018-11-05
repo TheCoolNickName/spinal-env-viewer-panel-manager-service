@@ -168,6 +168,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
             }
           }
           if (typeof cfg.onLoad !== "undefined") cfg.onLoad();
+          return true;
         }
         /**
          * method called when the viewer unload of the extention
@@ -178,6 +179,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
             this.viewer.subToolbar.removeControl(this.toolbarButton);
           }
           if (typeof cfg.onUnLoad !== "undefined") cfg.onUnLoad();
+          return true;
         }
 
         /**
