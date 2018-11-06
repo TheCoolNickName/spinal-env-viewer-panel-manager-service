@@ -37,10 +37,7 @@ function configInit(option) {
       closeBehaviour: option.panel.closeBehaviour || "hide"
     };
     if (typeof option.panel.style !== "undefined") {
-      cfg.style = {
-        height: option.panel.style.height || "calc(100% - 45px)",
-        overflowY: option.panel.style.overflowY || "auto"
-      };
+      cfg.style = {};
       Object.assign(cfg.panel.style, option.panel.style);
     }
   }
@@ -87,10 +84,18 @@ function getPanel() {
   if (this.panel === null) {
     this.panel = new window.PanelClass(this.viewer, this.cfg.panel.title);
     var _container = document.createElement("div");
-    _container.className =
+    var _scrollContainer = this.panel.createScrollContainer();
+
+    _container.className +=
       this.panel.container.id + "-panelcontainer " + this.cfg.panel.classname;
     Object.assign(_container.style, this.cfg.panel.style);
-    this.panel.container.appendChild(_container);
+    this.panel.container.appendChild(_scrollContainer);
+    _scrollContainer.style.height = "calc(100% - 52px)";
+    _scrollContainer.appendChild(_container);
+
+    var _footer = this.panel.createFooter();
+    this.panel.container.appendChild(_footer);
+
     if (this.cfg.vueMountComponent) {
       this.compoment = new this.cfg.vueMountComponent().$mount(_container);
     }
@@ -125,10 +130,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
     classname: "spinal-pannel",
     closeBehaviour: "hide"
   },
-  style: {
-    height: "calc(100% - 45px)",
-    overflowY: "auto"
-  }
+  style: {}
 }
 ```
      * @param {object} option see description
@@ -201,15 +203,16 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
          * @param {*} option
          */
         closePanel(option) {
-          this.panel.setVisible(false);
+          const panel = getPanel.call(this);
+          panel.setVisible(false);
           if (option.panel.closeBehaviour !== "hide") {
-            this.panel.container.remove();
-            this.panel = null;
             try {
               this.compoment.removed(option, this.viewer);
             } catch (e) {
               console.error(e);
             }
+            panel.container.remove();
+            this.panel = null;
           } else {
             try {
               this.compoment.closed(option, this.viewer);
@@ -224,7 +227,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
          * @param {*} option
          */
         tooglePanel(option) {
-          if (this.panel !== null) {
+          if (this.panel === null || this.panel.isVisible() === false) {
             this.openPanel(option);
           } else this.closePanel(option);
         }
