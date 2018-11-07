@@ -63,7 +63,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
         }
       };
       let SpinalDialogInstance = new SpinalDialog();
-      spinalPanelManagerService.register(cfg.name, SpinalDialogInstance);
+      spinalPanelManagerService.registerPanel(cfg.name, SpinalDialogInstance);
     }
   };
 };
