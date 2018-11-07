@@ -13,7 +13,7 @@ function getDialog() {
   if (!this.dialog) {
     this.dialog = document.createElement("div");
     this.dialog.className = "spinal-modal-container";
-    window.body.appendChild(this.dialog);
+    document.body.appendChild(this.dialog);
     this.compoment = new this.cfg.vueMountComponent({
       onFinised: this.onFinised.bind(this)
     }).$mount(this.dialog);
