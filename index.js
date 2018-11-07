@@ -33,11 +33,16 @@ const SpinalForgeExtention = require("./SpinalForgeExtention.js")(
   G_root.spinal.spinalPanelManagerService,
   SpinalPanelApp
 );
+const SpinalDialogPanel = require("./SpinalDialogPanel.js")(
+  G_root.spinal.spinalPanelManagerService,
+  SpinalPanelApp
+);
 
 module.exports = {
   spinalPanelManagerService: G_root.spinal.spinalPanelManagerService,
   SpinalPanelApp,
   SpinalForgeExtention,
+  SpinalDialogPanel,
   install(Vue) {
     Vue.prototype.$spinalPanelManagerService =
       G_root.spinal.spinalPanelManagerService;
