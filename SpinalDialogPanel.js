@@ -36,13 +36,15 @@ function configInit(option) {
 function getDialog() {
   if (!this.dialog) {
     this.dialog = document.createElement("div");
+    const _compo = document.createElement("div");
     this.dialog.className = "spinal-modal-container";
     document.body.appendChild(this.dialog);
+    this.dialog.appendChild(_compo);
     this.compoment = new this.cfg.vueMountComponent({
       propsData: {
         onFinised: this.onFinised.bind(this)
       }
-    }).$mount(this.dialog);
+    }).$mount(_compo);
   }
   return this.dialog;
 }
