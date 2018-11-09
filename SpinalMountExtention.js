@@ -25,11 +25,12 @@
 function configInit(option) {
   const cfg = {};
   if (!option.vueMountComponent) {
-    throw new Error("no vue Compoment to mount in createModal");
+    throw new Error("mount : missing option vueMountComponent");
   }
 
-  cfg.name = option.name || "spinalDialog";
+  cfg.name = option.name || "SpinalMount";
   cfg.vueMountComponent = option.vueMountComponent;
+  cfg.parentContainer = option.parentContainer || document.body;
   return cfg;
 }
 
@@ -38,7 +39,7 @@ function getDialog() {
     this.dialog = document.createElement("div");
     const _compo = document.createElement("div");
     this.dialog.className = "spinal-modal-container";
-    document.body.appendChild(this.dialog);
+    this.cfg.parentContainer.appendChild(this.dialog);
     this.dialog.appendChild(_compo);
     this.compoment = new this.cfg.vueMountComponent({
       propsData: {
@@ -51,9 +52,9 @@ function getDialog() {
 
 module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
   return {
-    createDialog(option) {
+    mount(option) {
       let cfg = configInit(option);
-      const SpinalDialog = class extends SpinalPanelApp {
+      const SpinalMount = class extends SpinalPanelApp {
         constructor() {
           super();
           this.cfg = cfg;
@@ -90,8 +91,8 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
           this.closePanel(closeResult);
         }
       };
-      let SpinalDialogInstance = new SpinalDialog();
-      spinalPanelManagerService.registerPanel(cfg.name, SpinalDialogInstance);
+      let SpinalMountInstance = new SpinalMount();
+      spinalPanelManagerService.registerPanel(cfg.name, SpinalMountInstance);
     }
   };
 };
