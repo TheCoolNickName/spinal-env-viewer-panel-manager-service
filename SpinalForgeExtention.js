@@ -196,7 +196,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
           const panel = getPanel.call(this);
           panel.setVisible(true);
           try {
-            this.compoment.opened(option, this.viewer);
+            this.compoment.opened.call(this.compoment, option, this.viewer);
           } catch (e) {
             console.error(e);
           }
@@ -211,7 +211,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
           panel.setVisible(false);
           if (option.panel.closeBehaviour !== "hide") {
             try {
-              this.compoment.removed(option, this.viewer);
+              this.compoment.removed.call(this.compoment, option, this.viewer);
             } catch (e) {
               console.error(e);
             }
@@ -219,7 +219,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
             this.panel = null;
           } else {
             try {
-              this.compoment.closed(option, this.viewer);
+              this.compoment.closed.call(this.compoment, option, this.viewer);
             } catch (e) {
               console.error(e);
             }
@@ -232,8 +232,8 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
          */
         tooglePanel(option) {
           if (this.panel === null || this.panel.isVisible() === false) {
-            this.openPanel(option);
-          } else this.closePanel(option);
+            this.openPanel.call(this, option);
+          } else this.closePanel.call(this.option);
         }
       };
       return SpinalForgeExtention;
