@@ -38,7 +38,7 @@ function configInit(option) {
     };
     if (typeof option.style !== "undefined") {
       cfg.style = {};
-      Object.assign(cfg.panel.style, option.style);
+      Object.assign(cfg.style, option.style);
     }
   }
   cfg.name = option.name || "spinalExtention";
@@ -88,9 +88,9 @@ function getPanel() {
 
     _container.className +=
       this.panel.container.id + "-panelcontainer " + this.cfg.panel.classname;
-    for (var key in this.cfg.panel.style) {
-      if (this.cfg.panel.style.hasOwnProperty(key)) {
-        this.panel.container.style[key] = this.cfg.panel.style[key];
+    for (var key in this.cfg.style) {
+      if (this.cfg.style.hasOwnProperty(key)) {
+        this.panel.container.style[key] = this.cfg.style[key];
       }
     }
     this.panel.container.appendChild(_scrollContainer);
