@@ -209,7 +209,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
         closePanel(option) {
           const panel = getPanel.call(this);
           panel.setVisible(false);
-          if (option.panel.closeBehaviour !== "hide") {
+          if (this.cfg.panel.closeBehaviour !== "hide") {
             try {
               this.compoment.removed.call(this.compoment, option, this.viewer);
             } catch (e) {
