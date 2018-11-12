@@ -36,9 +36,9 @@ function configInit(option) {
       classname: option.panel.classname || "spinal-pannel",
       closeBehaviour: option.panel.closeBehaviour || "hide"
     };
-    if (typeof option.panel.style !== "undefined") {
+    if (typeof option.style !== "undefined") {
       cfg.style = {};
-      Object.assign(cfg.panel.style, option.panel.style);
+      Object.assign(cfg.panel.style, option.style);
     }
   }
   cfg.name = option.name || "spinalExtention";
