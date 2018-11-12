@@ -233,7 +233,7 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
         tooglePanel(option) {
           if (this.panel === null || this.panel.isVisible() === false) {
             this.openPanel.call(this, option);
-          } else this.closePanel.call(this.option);
+          } else this.closePanel.call(this, option);
         }
       };
       return SpinalForgeExtention;
