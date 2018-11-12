@@ -87,7 +87,6 @@ module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
          * called when dialog closed by the dialog itself
          */
         onFinised(closeResult) {
-          console.log("onFinished");
           this.closePanel(closeResult);
         }
       };
