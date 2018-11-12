@@ -10,7 +10,121 @@ npm i --save https://github.com/spinalcom/spinal-env-viewer-panel-manager-servic
 
 ## Usage
 
-to do...
+Get the service instances and factory.
+
+```js
+const {
+  SpinalMountExtention
+} = require("spinal-env-viewer-panel-manager-service");
+```
+
+### Create an compoment to mount
+
+For example the following code create a compoment via vue-material Dialog.
+The compoment must have the methods `opened(option)` and `closed(option)`.
+A props `onFinised` is given so the compoment can close itsef if needed.
+
+```html
+<!-- testCompomentDialog.vue -->
+<!-- here is a small compoment repesenting a Prompt Dialog -->
+<template>
+  <div>
+    <md-dialog :md-active.sync="showDialog" @md-closed="closeDialog(false)">
+      <md-dialog-title>my custom prompt</md-dialog-title>
+      <md-dialog-content>
+        <md-field>
+          <label>Select Value</label>
+          <md-input v-model="inputValue"></md-input>
+        </md-field>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="closeDialog(false)">
+          Close
+        </md-button>
+        <md-button class="md-primary" @click="closeDialog(true)">
+          Save
+        </md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "testCompomentDialog",
+    props: ["onFinised"],
+    data() {
+      return {
+        showDialog: true,
+        inputValue: ""
+      };
+    },
+    methods: {
+      opened(option) {
+        this.inputValue = option.initialValue;
+        console.log("opened dialog", option);
+      },
+      removed(option) {
+        this.showDialog = false;
+        console.log("removed dialog", option);
+      },
+      closeDialog(closeResult) {
+        if (typeof this.onFinised === "function")
+          this.onFinised({ closeResult, inputValue: this.inputValue });
+      }
+    }
+  };
+</script>
+```
+
+### Register and mount the component.
+
+Now we can register the compomenet and choose where to mount it.
+
+```js
+import Vue from "vue";
+// retrive the Compoment
+import aVueCompomentDialog from "./testCompomentDialog.vue";
+
+SpinalMountExtention.mount({
+  // name registered.
+  name: "myCustomDialogName",
+  // Vue.extend to create a Compoment constructor
+  vueMountComponent: Vue.extend(aVueCompomentDialog),
+  // where to  append the Compoment
+  parentContainer: document.body
+});
+```
+
+### Build transform config
+
+Add some build config for browserify in the `package.json`.
+
+```json
+...
+  "browserify": {
+    "transform": [
+      "vueify",
+      "babelify"
+    ]
+  }
+...
+```
+
+## Open the compoment
+
+Later we can open the mounted compoment via an button (or something else) via the `openPanel` method.
+
+```js
+const {
+  spinalPanelManagerService,
+  SpinalMountExtention
+} = require("spinal-env-viewer-panel-manager-service");
+
+spinalPanelManagerService.openPanel("myCustomDialogName", {
+  initialValue: "hello"
+});
+```
 
 ---
 
@@ -28,31 +142,8 @@ to do...
 ## Functions
 
 <dl>
-<dt><a href="#createExtention">createExtention(option)</a> ⇒</dt>
-<dd><p>factory function to create a dynamic class that extends the <code>SpinalPanelApp</code> class</p>
-<pre><code class="language-javascript">{
-  name: &quot;extention_name&quot;,
-  vueMountComponent: Vue.extend(aVueCompoment),
-  toolbar: {
-    icon: &quot;done&quot;,
-    label: &quot;testLabel&quot;,
-    subToolbarName: &quot;spinalcom&quot;
-  },
-  panel: {
-    title: &quot;Spinalcom Panel&quot;,
-    classname: &quot;spinal-pannel&quot;,
-    closeBehaviour: &quot;hide&quot;
-  },
-  style: {
-    height: &quot;calc(100% - 45px)&quot;,
-    overflowY: &quot;auto&quot;
-  }
-}
-</code></pre>
-</dd>
-<dt><a href="#registerExtention">registerExtention(name, classExtention)</a></dt>
-<dd><p>Method to register an extention to the viewer and the forge viewer</p>
-</dd>
+<dt><a href="#mount">mount(option)</a></dt>
+<dd></dd>
 </dl>
 
 <a name="SpinalPanelManagerService"></a>
@@ -142,115 +233,14 @@ Creates an instance of SpinalPanelManagerService.
 ### new SpinalPanelApp()
 Base interface like class of a panel
 
-<a name="createExtention"></a>
+<a name="mount"></a>
 
-## createExtention(option) ⇒
-factory function to create a dynamic class that extends the `SpinalPanelApp` class
-```js
-{
-  name: "extention_name",
-  vueMountComponent: Vue.extend(aVueCompoment),
-  toolbar: {
-    icon: "done",
-    label: "testLabel",
-    subToolbarName: "spinalcom"
-  },
-  panel: {
-    title: "Spinalcom Panel",
-    classname: "spinal-pannel",
-    closeBehaviour: "hide"
-  },
-  style: {
-    height: "calc(100% - 45px)",
-    overflowY: "auto"
-  }
-}
-```
-
-**Kind**: global function  
-**Returns**: SpinalForgeExtention  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| option | <code>object</code> | see description |
-
-
-* [createExtention(option)](#createExtention) ⇒
-    * [~SpinalForgeExtention](#createExtention..SpinalForgeExtention) ⇐ [<code>SpinalPanelApp</code>](#SpinalPanelApp)
-        * [.load()](#createExtention..SpinalForgeExtention+load)
-        * [.unload()](#createExtention..SpinalForgeExtention+unload)
-        * [.openPanel(option)](#createExtention..SpinalForgeExtention+openPanel)
-        * [.closePanel(option)](#createExtention..SpinalForgeExtention+closePanel)
-        * [.tooglePanel(option)](#createExtention..SpinalForgeExtention+tooglePanel)
-
-<a name="createExtention..SpinalForgeExtention"></a>
-
-### createExtention~SpinalForgeExtention ⇐ [<code>SpinalPanelApp</code>](#SpinalPanelApp)
-class returned by createExtention
-this extention is also registered in autodesk viweer
-
-**Kind**: inner class of [<code>createExtention</code>](#createExtention)  
-**Extends**: [<code>SpinalPanelApp</code>](#SpinalPanelApp)  
-
-* [~SpinalForgeExtention](#createExtention..SpinalForgeExtention) ⇐ [<code>SpinalPanelApp</code>](#SpinalPanelApp)
-    * [.load()](#createExtention..SpinalForgeExtention+load)
-    * [.unload()](#createExtention..SpinalForgeExtention+unload)
-    * [.openPanel(option)](#createExtention..SpinalForgeExtention+openPanel)
-    * [.closePanel(option)](#createExtention..SpinalForgeExtention+closePanel)
-    * [.tooglePanel(option)](#createExtention..SpinalForgeExtention+tooglePanel)
-
-<a name="createExtention..SpinalForgeExtention+load"></a>
-
-#### spinalForgeExtention.load()
-method called on load of the extention (managed by the autodesk viewer)
-the method create a button in the toolbar if put in the option of `createExtention`.
-
-**Kind**: instance method of [<code>SpinalForgeExtention</code>](#createExtention..SpinalForgeExtention)  
-<a name="createExtention..SpinalForgeExtention+unload"></a>
-
-#### spinalForgeExtention.unload()
-method called when the viewer unload of the extention
-(managed by the autodesk viewer)
-
-**Kind**: instance method of [<code>SpinalForgeExtention</code>](#createExtention..SpinalForgeExtention)  
-<a name="createExtention..SpinalForgeExtention+openPanel"></a>
-
-#### spinalForgeExtention.openPanel(option)
-**Kind**: instance method of [<code>SpinalForgeExtention</code>](#createExtention..SpinalForgeExtention)  
-
-| Param | Type |
-| --- | --- |
-| option | <code>\*</code> | 
-
-<a name="createExtention..SpinalForgeExtention+closePanel"></a>
-
-#### spinalForgeExtention.closePanel(option)
-**Kind**: instance method of [<code>SpinalForgeExtention</code>](#createExtention..SpinalForgeExtention)  
-
-| Param | Type |
-| --- | --- |
-| option | <code>\*</code> | 
-
-<a name="createExtention..SpinalForgeExtention+tooglePanel"></a>
-
-#### spinalForgeExtention.tooglePanel(option)
-**Kind**: instance method of [<code>SpinalForgeExtention</code>](#createExtention..SpinalForgeExtention)  
-
-| Param | Type |
-| --- | --- |
-| option | <code>\*</code> | 
-
-<a name="registerExtention"></a>
-
-## registerExtention(name, classExtention)
-Method to register an extention to the viewer and the forge viewer
-
+## mount(option)
 **Kind**: global function  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>string</code> | name of the extention |
-| classExtention | <code>\*</code> | an extention created by `createExtention` |
+| Param | Type |
+| --- | --- |
+| option | <code>\*</code> | 
 
 
 ---

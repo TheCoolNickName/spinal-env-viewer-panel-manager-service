@@ -88,7 +88,11 @@ function getPanel() {
 
     _container.className +=
       this.panel.container.id + "-panelcontainer " + this.cfg.panel.classname;
-    Object.assign(_container.style, this.cfg.panel.style);
+    for (var key in this.cfg.panel.style) {
+      if (this.cfg.panel.style.hasOwnProperty(key)) {
+        this.panel.container.style[key] = this.cfg.panel.style[key];
+      }
+    }
     this.panel.container.appendChild(_scrollContainer);
     _scrollContainer.style.height = "calc(100% - 52px)";
     _scrollContainer.appendChild(_container);

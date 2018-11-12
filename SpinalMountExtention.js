@@ -50,8 +50,24 @@ function getDialog() {
   return this.dialog;
 }
 
+/**
+ *
+ * @param {*} spinalPanelManagerService
+ * @param {*} SpinalPanelApp
+ * @returns {object} { mount }
+ */
 module.exports = function(spinalPanelManagerService, SpinalPanelApp) {
   return {
+    /**
+```js
+{
+  name: "myCustomDialogName",
+  vueMountComponent: Vue.extend(aVueCompomentDialog),
+  parentContainer: document.body
+}```
+     *
+     * @param {*} option
+     */
     mount(option) {
       let cfg = configInit(option);
       const SpinalMount = class extends SpinalPanelApp {
