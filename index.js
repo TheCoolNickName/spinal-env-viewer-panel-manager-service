@@ -29,10 +29,6 @@ const SpinalPanelApp = require("./SpinalPanelApp");
 if (typeof G_root.spinal === "undefined") G_root.spinal = {};
 if (typeof G_root.spinal.spinalPanelManagerService === "undefined")
   G_root.spinal.spinalPanelManagerService = new SpinalPanelManagerService();
-const SpinalForgeExtention = require("./SpinalForgeExtention.js")(
-  G_root.spinal.spinalPanelManagerService,
-  SpinalPanelApp
-);
 const SpinalMountExtention = require("./SpinalMountExtention.js")(
   G_root.spinal.spinalPanelManagerService,
   SpinalPanelApp
@@ -41,7 +37,6 @@ const SpinalMountExtention = require("./SpinalMountExtention.js")(
 module.exports = {
   spinalPanelManagerService: G_root.spinal.spinalPanelManagerService,
   SpinalPanelApp,
-  SpinalForgeExtention,
   SpinalMountExtention,
   install(Vue) {
     Vue.prototype.$spinalPanelManagerService =
